@@ -1,0 +1,15 @@
+*.pyc
+*.key
+*.pem
+*.rej
+*.orig
+*~
+*.bak
+*.old
+*.dump
+*.tsv
+*.log
+*.patch
+*.diff
+*.swp
+*.db
