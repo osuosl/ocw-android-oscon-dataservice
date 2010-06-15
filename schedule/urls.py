@@ -5,7 +5,9 @@ from views import *
 urlpatterns = patterns('',
     # Example:
     (r'^$', sessions),
-    (r'speakers/$', speakers),
+    (r'sessions/$', sessions_day),
+    (r'session/(\d+)$', session),
+    (r'speaker/$', speaker),
     (r'tracks/$', tracks),
     (r'locations/$', locations),
 )

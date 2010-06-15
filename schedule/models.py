@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django.db import models
 
 
@@ -29,7 +31,7 @@ class Speaker(models.Model):
         return dict(
             id = self.id,
             name = self.name,
-            bio = self.bio,
+            biography = self.bio,
             affiliation = self.affiliation,
             website = self.website,
             twitter = self.twitter
@@ -47,14 +49,27 @@ class Event(models.Model):
     track = models.ForeignKey(Track, related_name="events", null=True)
     speakers = models.ManyToManyField(Speaker, related_name="events")
     
-    def dict(self):
+    def list_dict(self):
+        """ returns just properties needed for event list """
+        return dict(
+            id = self.id,
+            title = self.title,
+            start_time = self.start.strftime("%Y-%m-%dT%H:%M:%S-07:00"),
+            end_time = self.end.strftime("%Y-%m-%dT%H:%M:%S-07:00"),
+            location = self.location_id,
+            track_id = self.track_id,
+            user_ids = [s.id for s in self.speakers.all()]
+        )
+        
+    def detail_dict(self):
+        """ returns all properties for the detail view """
         return dict(
             id = self.id,
             title = self.title,
             description = self.description,
-            #start = self.start,
-            #end = self.end,
+            start_time = self.start.strftime("%Y-%m-%dT%H:%M:%S-07:00"),
+            end_time = self.end.strftime("%Y-%m-%dT%H:%M:%S-07:00"),
             location = self.location_id,
-            track = self.track_id,
-            speakers = [s.id for s in self.speakers.all()]
+            track_id = self.track_id,
+            user_ids = [s.id for s in self.speakers.all()]
         )
