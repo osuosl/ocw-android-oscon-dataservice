@@ -53,10 +53,10 @@ def session(request, id):
     return HttpResponse(json.dumps(session.detail_dict()))
 
 
-def speaker(request):
+def speaker(request, id):
     """ speaker details """
-    list_ = [o.dict() for o in Speaker.objects.all()]
-    return HttpResponse(json.dumps(list_))
+    speaker = Speaker.objects.get(id=id)
+    return HttpResponse(json.dumps(speaker.dict()))
 
 
 def tracks(request):

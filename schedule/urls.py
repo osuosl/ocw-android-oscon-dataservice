@@ -11,7 +11,7 @@ urlpatterns = patterns('',
     
     (r'sessions/$', sessions_day),
     (r'session/(\d+)$', session),
-    (r'speaker/$', speaker),
+    (r'speaker/(\d+)$', speaker),
     (r'tracks/$', tracks),
     (r'locations/$', locations),
 )
