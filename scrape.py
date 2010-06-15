@@ -151,15 +151,14 @@ def parse_session(id, force=False):
         track_name = track_tags[0]('a')[0].string.replace('&amp;','&')
     else:
         track_name = " "
-        if track_name in TRACKS:
-            event.track = TRACKS[track_name]
-        else:
-            track = Track()
-            track.name = track_name
-            track.save()
-            TRACKS[track_name] = track
-            event.track = track
-        
+    if track_name in TRACKS:
+        event.track = TRACKS[track_name]
+    else:
+        track = Track()
+        track.name = track_name
+        track.save()
+        TRACKS[track_name] = track
+        event.track = track
     
     #location
     location_name = details('span', attrs={'class':'location'})[0].string
@@ -189,13 +188,15 @@ def parse(html):
         print 'EXCEPTION LOADING FILE (%s) : %s' % (file, e)
         return
     
+    force = True
+    
     session_tags = soup.findAll('div', attrs={'class':"en_session vevent"})
     for tag in session_tags[0:]:
     #    try:
             id_tag = tag('a', attrs={'class':"url uid"})
             if len(id_tag):
                 id = id_tag[0]['name'][7:]
-                parse_session(id)
+                parse_session(id, force)
             else:
                 print id_tag
     #    except Exception, e:
