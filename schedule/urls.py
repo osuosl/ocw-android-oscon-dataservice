@@ -4,7 +4,11 @@ from views import *
 
 urlpatterns = patterns('',
     # Example:
+        
     (r'^$', sessions),
+    
+    (r'conference/$', conference),
+    
     (r'sessions/$', sessions_day),
     (r'session/(\d+)$', session),
     (r'speaker/$', speaker),

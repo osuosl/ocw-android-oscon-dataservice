@@ -6,6 +6,25 @@ from django.http import HttpResponse
 from models import *
 
 
+def conference(request):
+    """ basic conference info """
+    
+    # get start/end date. first/last event in schedule
+    first_date = Event.objects.all().order_by('start')[0].start
+    end_date = Event.objects.all().order_by('-start')[0].start
+    
+    tracks = {}
+    for track in Track.objects.all():
+        tracks[track.id] = dict(name=track.name, color=track.color, color_dark=256)
+    
+    info = dict(
+        start = first_date.strftime("%Y-%m-%dT%H:%M:%S-07:00"),
+        end = end_date.strftime("%Y-%m-%dT%H:%M:%S-07:00"),
+        tracks=tracks,
+    )
+    
+    return HttpResponse(json.dumps(info))
+
 def sessions_day(request):
     """ filters session by day """
     timestamp = float(request.GET['t'])
