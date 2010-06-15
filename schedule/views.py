@@ -17,10 +17,15 @@ def conference(request):
     for track in Track.objects.all():
         tracks[track.id] = dict(name=track.name, color=-5592406, color_dark=-5592406)
     
+    locations = {}
+    for location in Location.objects.all():
+        locations[location.id] = dict(name=location.name)
+    
     info = dict(
         start = first_date.strftime("%Y-%m-%dT%H:%M:%S-07:00"),
         end = end_date.strftime("%Y-%m-%dT%H:%M:%S-07:00"),
         tracks=tracks,
+        locations=locations
     )
     
     return HttpResponse(json.dumps(info))

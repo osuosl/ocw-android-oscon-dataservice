@@ -56,7 +56,7 @@ class Event(models.Model):
             title = self.title,
             start_time = self.start.strftime("%Y-%m-%dT%H:%M:%S-07:00"),
             end_time = self.end.strftime("%Y-%m-%dT%H:%M:%S-07:00"),
-            location = self.location_id,
+            room_id = self.location_id,
             track_id = self.track_id,
             user_ids = [s.id for s in self.speakers.all()]
         )
@@ -69,7 +69,7 @@ class Event(models.Model):
             description = self.description,
             start_time = self.start.strftime("%Y-%m-%dT%H:%M:%S-07:00"),
             end_time = self.end.strftime("%Y-%m-%dT%H:%M:%S-07:00"),
-            location = self.location_id,
+            room_id = self.location_id,
             track_id = self.track_id,
             user_ids = [s.id for s in self.speakers.all()]
         )
