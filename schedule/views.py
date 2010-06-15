@@ -15,7 +15,7 @@ def conference(request):
     
     tracks = {}
     for track in Track.objects.all():
-        tracks[track.id] = dict(name=track.name, color=track.color, color_dark=256)
+        tracks[track.id] = dict(name=track.name, color=-5592406, color_dark=-5592406)
     
     info = dict(
         start = first_date.strftime("%Y-%m-%dT%H:%M:%S-07:00"),
@@ -30,14 +30,16 @@ def sessions_day(request):
     timestamp = float(request.GET['t'])
     day = date.fromtimestamp(timestamp)
     date_end = day + timedelta(1)
-    list_ = [session.list_dict() for session in Event.objects.filter(start__gte=day, start__lte=date_end)]
-    return HttpResponse(json.dumps(list_))
+    items = [session.list_dict() for session in Event.objects.filter(start__gte=day, start__lte=date_end)]
+    data = dict(items=items)
+    return HttpResponse(json.dumps(data))
 
 
 def sessions(request):
     """ lists all sessions """
-    list_ = [session.list_dict() for session in Event.objects.all()]
-    return HttpResponse(json.dumps(list_))
+    items = [session.list_dict() for session in Event.objects.all()]
+    data = dict(items=items)
+    return HttpResponse(json.dumps(data))
 
 
 def session(request, id):
