@@ -15,11 +15,14 @@ class Track(models.Model):
     name = models.CharField(max_length=64, unique=True)
     color = models.CharField(max_length=6, default="AAAAAA")
     color_dark = models.CharField(max_length=6, default="888888")
+    color_text = models.CharField(max_length=6, default="FFFFFF")
 
     def dict(self):
         return dict(
             name=self.name,
-            color=self.color
+            color="#%s"%self.color,
+            color_dark = "#%s"%self.color_dark,
+            color_text = "#%s"%self.color_text
         )
 
     def __str__(self):

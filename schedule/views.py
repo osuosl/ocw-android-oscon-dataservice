@@ -15,11 +15,11 @@ def conference(request):
     
     tracks = {}
     for track in Track.objects.all():
-        tracks[track.id] = dict(name=track.name, color=-5592406, color_dark=-5592406)
+        tracks[track.id] = track.dict()
     
     locations = {}
     for location in Location.objects.all():
-        locations[location.id] = dict(name=location.name)
+        locations[location.id] = dict(name=location.display_name)
     
     info = dict(
         start = first_date.strftime("%Y-%m-%dT%H:%M:%S-07:00"),
@@ -29,6 +29,7 @@ def conference(request):
     )
     
     return HttpResponse(json.dumps(info))
+
 
 def sessions_day(request, timestamp):
     """ filters session by day """
