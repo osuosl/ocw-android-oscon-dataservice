@@ -26,9 +26,10 @@ from schedule.models import *
 URI = 'http://www.oscon.com/oscon2010/public/schedule/full'
 
 URIS = [
-    'http://www.oscon.com/oscon2010/public/schedule/stype/keynote',
-   'http://www.oscon.com/oscon2010/public/schedule/stype/bof',
-   'http://www.oscon.com/oscon2010/public/schedule/stype/Event'
+    ('http://www.oscon.com/oscon2010/public/schedule/stype/keynote','en_session en_plenary vevent'),
+   #'http://www.oscon.com/oscon2010/public/schedule/stype/bof',
+   ('http://www.oscon.com/oscon2010/public/schedule/stype/Event','en_session en_plenary vevent'),
+   #('http://www.oscon.com/oscon2010/public/schedule/full','en_session vevent')
     ]
 
 
@@ -98,10 +99,37 @@ def parse_speaker(id):
     
     speaker.save()
     return speaker
+
+
+def scrub_html(raw):
+    raw = raw.replace('&#8217;',"'")
+    raw = raw.replace('</span>','')
+    raw = raw.replace('<br>','\n')
+    raw = raw.replace('<br />','\n')
+    raw = raw.replace('<br/>','\n')
+    raw = raw.replace('<p>','')
+    raw = raw.replace('<b>','')
+    raw = raw.replace('</b>','')
+    raw = raw.replace('<strong>','')
+    raw = raw.replace('</strong>','')
+    raw = raw.replace('<ul>','')
+    raw = raw.replace('</ul>','')
+    raw = raw.replace('</p>','\n')
+    raw = raw.replace('</li>','')
+    raw = raw.replace('&quot;','"')
+    raw = raw.replace('&amp;','&')
+    raw = raw.replace('<li>','  * ')
+    raw = raw.replace('&#38;','')
+    raw = raw.replace('&#8220','"')
+    raw = raw.replace('&#8221','"')
+    raw = raw.replace('&#8230','...')
+    
+    return raw
+    
     
 
 def parse_session(id, force=False):
-    print 'parsing id: ', id
+    print 'parsing session: ', id
     url = URI_SESSION % id
     http = httplib2.Http()
     response, html = http.request(url, 'GET')
@@ -119,27 +147,14 @@ def parse_session(id, force=False):
         event.oid = id
     
     # title
-    event.title = details('h1', attrs={'class':'summary'})[0].string
+    title = details('h1', attrs={'class':'summary'})[0].string
+    event.title = scrub_html(title)
+    
     
     # Description
     description_tag = details('div', attrs={'class':'en_session_description description'})[0]
     raw = description_tag.renderContents()
-    raw = raw.replace('&8217;',"'")
-    raw = raw.replace('</span>','')
-    raw = raw.replace('<br>','\n')
-    raw = raw.replace('<br />','\n')
-    raw = raw.replace('<br/>','\n')
-    raw = raw.replace('<p>','')
-    raw = raw.replace('<b>','')
-    raw = raw.replace('</b>','')
-    raw = raw.replace('<strong>','')
-    raw = raw.replace('</strong>','')
-    raw = raw.replace('<ul>','')
-    raw = raw.replace('</ul>','')
-    raw = raw.replace('</p>','\n')
-    raw = raw.replace('</li>','')
-    raw = raw.replace('<li>','  * ')
-    event.description = raw
+    event.description = scrub_html(raw)
     
     #speaker(s)
     moderators = []
@@ -193,7 +208,7 @@ def parse_session(id, force=False):
     for mod in moderators:
         event.speakers.add(mod)
 
-def parse_html(html):
+def parse_html(html, klass):
     load_data()
     try:
         soup = BeautifulSoup(html)
@@ -203,7 +218,7 @@ def parse_html(html):
     
     force = True
     
-    session_tags = soup.findAll('div', attrs={'class':"en_session vevent"})
+    session_tags = soup.findAll('div', attrs={'class':klass})
     for tag in session_tags[0:]:
     #    try:
             id_tag = tag('a', attrs={'class':"url uid"})
@@ -211,7 +226,7 @@ def parse_html(html):
                 id = id_tag[0]['name'][7:]
                 parse_session(id, force)
             else:
-                print id_tag
+                print 'no id >>>>', id_tag
     #    except Exception, e:
     #        print tag
     #        raise e
@@ -219,10 +234,10 @@ def parse_html(html):
 
 
 def parse():
-    for url in URIS:
+    for url, klass in URIS:
         http = httplib2.Http()
         response, html = http.request(url, 'GET')
-        parse_html(html)
+        parse_html(html, klass)
 
 
 if __name__ == '__main__':

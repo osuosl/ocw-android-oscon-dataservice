@@ -27,14 +27,14 @@ class SpeakerInline(admin.StackedInline):
 class EventAdmin(admin.ModelAdmin):
     list_display = ('title','track','start', 'end')
     list_filter = ('track','location')
-    search_fields = ('title',)
+    search_fields = ('title','description')
     exclude=('speakers',)
     ordering = ('start',)
 
 
 class SpeakerAdmin(admin.ModelAdmin):
     list_display = ('name',)
-    search_fields = ('name',)
+    search_fields = ('name','bio')
     inlines = [EventInline]
 
 
