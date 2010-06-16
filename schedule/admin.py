@@ -10,12 +10,12 @@ class EventInline(admin.TabularInline):
 
 
 class TrackAdmin(admin.ModelAdmin):
-    list_display = ('id','name',)
+    list_display = ('id','name','color')
     inlines = [EventInline]
 
 
 class LocationAdmin(admin.ModelAdmin):
-    list_display = ('name',)
+    list_display = ('name', 'display_name')
     inlines = [EventInline]
 
 

@@ -29,7 +29,7 @@ URIS = [
     ('http://www.oscon.com/oscon2010/public/schedule/stype/keynote','en_session en_plenary vevent'),
    #'http://www.oscon.com/oscon2010/public/schedule/stype/bof',
    ('http://www.oscon.com/oscon2010/public/schedule/stype/Event','en_session en_plenary vevent'),
-   #('http://www.oscon.com/oscon2010/public/schedule/full','en_session vevent')
+   ('http://www.oscon.com/oscon2010/public/schedule/full','en_session vevent')
     ]
 
 
@@ -45,6 +45,7 @@ def load_data():
     """ loads data objects that are reused for many events """
     for location in Location.objects.all():
         LOCATIONS[location.name] = location
+        LOCATIONS[location.display_name] = location
     for track in Track.objects.all():
         TRACKS[track.name] = track
 
@@ -195,9 +196,10 @@ def parse_session(id, force=False):
     else:
         location = Location()
         location.name = location_name
+        location.display_name = location_name
         location.save()
-        
         LOCATIONS[location_name] = location
+        
         event.location = location
     
     event.save()

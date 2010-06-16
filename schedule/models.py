@@ -5,6 +5,7 @@ from django.db import models
 
 class Location(models.Model):
     name = models.CharField(max_length=64, unique=True)
+    display_name = models.CharField(max_length=64)
 
     def __str__(self):
         return self.name
@@ -13,6 +14,7 @@ class Location(models.Model):
 class Track(models.Model):
     name = models.CharField(max_length=64, unique=True)
     color = models.CharField(max_length=6, default="AAAAAA")
+    color_dark = models.CharField(max_length=6, default="888888")
 
     def dict(self):
         return dict(
@@ -47,7 +49,7 @@ class Speaker(models.Model):
 
 
 class Event(models.Model):
-    oid = models.CharField(max_length=10, unique=True)
+    oid = models.CharField(max_length=10, unique=True, null=True, blank=True)
     updated = models.DateTimeField(auto_now=True)
     title = models.CharField(max_length=256)
     description = models.TextField(max_length=4096)
@@ -56,6 +58,10 @@ class Event(models.Model):
     location = models.ForeignKey(Location, related_name="events")
     track = models.ForeignKey(Track, related_name="events", null=True)
     speakers = models.ManyToManyField(Speaker, related_name="events")
+    display = models.BooleanField(default=True)
+    
+    class Meta:
+        ordering = ('start','end')
     
     def list_dict(self):
         """ returns just properties needed for event list """
