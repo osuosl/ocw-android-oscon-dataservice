@@ -23,7 +23,7 @@
     {"pk": 23, "model": "schedule.location", "fields": {"display_name": "F150 El Camp", "name": "F150 El Camp"}},
     {"pk": 24, "model": "schedule.location", "fields": {"display_name": "E141", "name": "E141"}},
     {"pk": 25, "model": "schedule.location", "fields": {"display_name": "Expo Hall E", "name": "Expo Hall E"}},
-    
+ 
     {"pk": 1, "model": "schedule.track", "fields": {"color": "F1F6FF", "name": "Keynote", "color_dark": "bed5ff"}},
     {"pk": 2, "model": "schedule.track", "fields": {"color": "BBCCDD", "name": "Event", "color_dark": "99b3cc"}},
     {"pk": 3, "model": "schedule.track", "fields": {"color": "AEEEEE", "name": "Tools & Techniques", "color_dark": "84e5e5"}},
@@ -49,5 +49,15 @@
     {"pk": 23, "model": "schedule.track", "fields": {"color": "FFFFDD", "name": "Products & Services", "color_dark": "ffffaa"}},
     {"pk": 24, "model": "schedule.track", "fields": {"color": "FFEECC", "name": "Business", "color_dark": "ffdd99"}},
     {"pk": 25, "model": "schedule.track", "fields": {"color": "CCFFFF", "name": "Health", "color_dark": "99ffff"}},
-    {"pk": 26, "model": "schedule.track", "fields": {"color": "99FFCC", "name": "Operating Systems", "color_dark": "66ffb3"}}
+    {"pk": 26, "model": "schedule.track", "fields": {"color": "99FFCC", "name": "Operating Systems", "color_dark": "66ffb3"}},
+ 
+    {"pk": 1, "model": "schedule.event", "fields": {"updated": "2010-06-16 09:14:19", "end": "2010-07-19 13:30:00", "description": "Catered Lunch", "title": "Lunch", "track": 14, "oid": "", "speakers": [], "start": "2010-07-19 12:00:00", "location": 25, "display": true}},
+    {"pk": 2, "model": "schedule.event", "fields": {"updated": "2010-06-16 09:14:51", "end": "2010-07-20 13:30:00", "description": "Catered Lunch", "title": "Lunch", "track": 14, "oid": "-1000", "speakers": [], "start": "2010-07-20 12:00:00", "location": 25, "display": true}},
+    {"pk": 4, "model": "schedule.event", "fields": {"updated": "2010-06-16 09:07:30", "end": "2010-07-21 10:40:00", "description": "Morning Break", "title": "Morning Break", "track": 14, "oid": "-1002", "speakers": [], "start": "2010-07-21 10:10:00", "location": 25, "display": true}},
+    {"pk": 3, "model": "schedule.event", "fields": {"updated": "2010-06-16 09:14:30", "end": "2010-07-21 13:40:00", "description": "Catered Lunch", "title": "Lunch", "track": 14, "oid": "-1001", "speakers": [], "start": "2010-07-21 12:10:00", "location": 25, "display": true}},
+    {"pk": 5, "model": "schedule.event", "fields": {"updated": "2010-06-16 09:08:59", "end": "2010-07-21 16:30:00", "description": "Afternoon Break", "title": "Afternoon Break", "track": 14, "oid": "-1003", "speakers": [], "start": "2010-07-21 15:10:00", "location": 25, "display": true}},
+    {"pk": 6, "model": "schedule.event", "fields": {"updated": "2010-06-16 09:10:04", "end": "2010-07-22 10:40:00", "description": "Morning Break", "title": "Morning Break", "track": 14, "oid": "-1004", "speakers": [], "start": "2010-07-22 10:10:00", "location": 25, "display": true}},
+    {"pk": 7, "model": "schedule.event", "fields": {"updated": "2010-06-16 09:10:49", "end": "2010-07-22 13:40:00", "description": "Catered Lunch", "title": "Lunch", "track": 14, "oid": "-1005", "speakers": [], "start": "2010-07-22 12:10:00", "location": 25, "display": true}},
+    {"pk": 8, "model": "schedule.event", "fields": {"updated": "2010-06-16 09:11:28", "end": "2010-07-22 16:30:00", "description": "Afternoon Break", "title": "Afternoon Break", "track": 14, "oid": "-1007", "speakers": [], "start": "2010-07-22 15:10:00", "location": 25, "display": true}},
+    {"pk": 9, "model": "schedule.event", "fields": {"updated": "2010-06-16 09:13:57", "end": "2010-07-23 11:00:00", "description": "Coffee", "title": "Coffee", "track": 14, "oid": "-1008", "speakers": [], "start": "2010-07-23 10:40:00", "location": 4, "display": true}}
 ]
