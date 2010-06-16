@@ -116,6 +116,11 @@ def parse_session(id, force=False):
     # Description
     description_tag = details('div', attrs={'class':'en_session_description description'})[0]
     raw = description_tag.renderContents()
+    raw = raw.replace('&8217;',"'")
+    raw = raw.replace('</span>','')
+    raw = raw.replace('<br>','\n')
+    raw = raw.replace('<br />','\n')
+    raw = raw.replace('<br/>','\n')
     raw = raw.replace('<p>','')
     raw = raw.replace('<b>','')
     raw = raw.replace('</b>','')

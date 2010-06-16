@@ -9,7 +9,9 @@ urlpatterns = patterns('',
     
     (r'conference/$', conference),
     
-    (r'sessions/$', sessions_day),
+    (r'session/$', sessions),
+    (r'sessions_day/(\d+)$', sessions_day),
+    
     (r'session/(\d+)$', session),
     (r'speaker/(\d+)$', speaker),
     (r'tracks/$', tracks),

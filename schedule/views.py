@@ -30,9 +30,9 @@ def conference(request):
     
     return HttpResponse(json.dumps(info))
 
-def sessions_day(request):
+def sessions_day(request, timestamp):
     """ filters session by day """
-    timestamp = float(request.GET['t'])
+    timestamp = float(timestamp)/1000
     day = date.fromtimestamp(timestamp)
     date_end = day + timedelta(1)
     items = [session.list_dict() for session in Event.objects.filter(start__gte=day, start__lte=date_end)]
