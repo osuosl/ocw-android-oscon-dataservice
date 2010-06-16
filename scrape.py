@@ -24,6 +24,14 @@ from schedule.models import *
 
 
 URI = 'http://www.oscon.com/oscon2010/public/schedule/full'
+
+URIS = [
+    'http://www.oscon.com/oscon2010/public/schedule/stype/keynote',
+   'http://www.oscon.com/oscon2010/public/schedule/stype/bof',
+   'http://www.oscon.com/oscon2010/public/schedule/stype/Event'
+    ]
+
+
 URI_SESSION = 'http://www.oscon.com/oscon2010/public/schedule/detail/%s'
 URI_SPEAKER = 'http://www.oscon.com/oscon2010/public/schedule/speaker/%s'
 
@@ -185,7 +193,7 @@ def parse_session(id, force=False):
     for mod in moderators:
         event.speakers.add(mod)
 
-def parse(html):
+def parse_html(html):
     load_data()
     try:
         soup = BeautifulSoup(html)
@@ -210,8 +218,13 @@ def parse(html):
             #continue
 
 
+def parse():
+    for url in URIS:
+        http = httplib2.Http()
+        response, html = http.request(url, 'GET')
+        parse_html(html)
+
+
 if __name__ == '__main__':
-    f = open('./full.html', 'r')
-    parse(f.read())
-    f.close()
+    parse()
 

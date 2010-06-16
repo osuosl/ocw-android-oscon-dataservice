@@ -6,6 +6,9 @@ from django.db import models
 class Location(models.Model):
     name = models.CharField(max_length=64, unique=True)
 
+    def __str__(self):
+        return self.name
+
 
 class Track(models.Model):
     name = models.CharField(max_length=64, unique=True)
@@ -17,11 +20,13 @@ class Track(models.Model):
             color=self.color
         )
 
+    def __str__(self):
+        return self.name
 
 class Speaker(models.Model):
     oid = models.CharField(max_length=10, unique=True, null=True, blank=True)
     name = models.CharField(max_length=128)
-    bio = models.CharField(max_length=4096, blank=True, null=True)
+    bio = models.TextField(max_length=4096, blank=True, null=True)
     affiliation = models.CharField(max_length=256, null=True, blank=True)
     website = models.CharField(max_length=256, null=True, blank=True)
     twitter = models.CharField(max_length=64, null=True, blank=True)
@@ -37,12 +42,15 @@ class Speaker(models.Model):
             twitter = self.twitter
         )
 
+    def __str__(self):
+        return self.name
+
 
 class Event(models.Model):
     oid = models.CharField(max_length=10, unique=True)
     updated = models.DateTimeField(auto_now=True)
     title = models.CharField(max_length=256)
-    description = models.CharField(max_length=4096)
+    description = models.TextField(max_length=4096)
     start = models.DateTimeField()
     end = models.DateTimeField(null=True, blank=True)
     location = models.ForeignKey(Location, related_name="events")
