@@ -1,11 +1,14 @@
 from datetime import date, timedelta
 import json
 
+from django.core.cache import cache
 from django.http import HttpResponse
+from django.views.decorators.cache import cache_page
 
 from models import *
 
 
+@cache_page(60 * 15)
 def conference(request):
     """ basic conference info """
     
@@ -35,10 +38,18 @@ def sessions_day(request, timestamp):
     """ filters session by day """
     timestamp = float(timestamp)/1000
     day = date.fromtimestamp(timestamp)
-    date_end = day + timedelta(1)
-    items = [session.list_dict() for session in Event.objects.filter(start__gte=day, start__lte=date_end)]
-    data = dict(items=items)
-    return HttpResponse(json.dumps(data))
+    
+    # use cache if available
+    key = "sessions_%s" % day
+    json_str = cache.get(key)
+    if not json_str:
+        # data wasn't cached
+        date_end = day + timedelta(1)
+        items = [session.list_dict() for session in Event.objects.filter(start__gte=day, start__lte=date_end)]
+        data = dict(items=items)
+        json_str = json.dumps(data)
+        cache.set(key, json_str, 60*15)
+    return HttpResponse(json_str)
 
 
 def sessions(request):
@@ -48,12 +59,15 @@ def sessions(request):
     return HttpResponse(json.dumps(data))
 
 
+@cache_page(60 * 15)
 def session(request, id):
     """ session details """
     session = Event.objects.get(id=id)
-    return HttpResponse(json.dumps(session.detail_dict()))
+    json_ = json.dumps(session.detail_dict())
+    return HttpResponse(json_)
 
 
+@cache_page(60 * 15)
 def speaker(request, id):
     """ speaker details """
     speaker = Speaker.objects.get(id=id)
