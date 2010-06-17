@@ -119,15 +119,28 @@ def scrub_html(raw):
     raw = raw.replace('</li>','<br/>')
     #raw = raw.replace('&quot;','"')
     #raw = raw.replace('&amp;','&')
-    raw = raw.replace('<li>','&nbsp;&nbsp;&nbsp;* ')
+    raw = raw.replace('<li>','&nbsp;&nbsp;&nbsp;&#8226; ')
     #raw = raw.replace('&#38;','')
     #raw = raw.replace('&#8220','"')
     #raw = raw.replace('&#8221','"')
     #raw = raw.replace('&#8230','...')
-    
     return raw
-    
-    
+
+
+def scrub_html_strict(raw):
+    raw = raw.replace('&#8217;',"'")
+    raw = raw.replace('<b>','')
+    raw = raw.replace('</b>','')
+    raw = raw.replace('<strong>','')
+    raw = raw.replace('</strong>','')
+    raw = raw.replace('&quot;','"')
+    raw = raw.replace('&amp;','&')    
+    raw = raw.replace('&#38;','')
+    raw = raw.replace('&#8220','"')
+    raw = raw.replace('&#8221','"')
+    raw = raw.replace('&#8230','...')
+    return raw
+
 
 def parse_session(id, force=False):
     print 'parsing session: ', id
@@ -149,7 +162,7 @@ def parse_session(id, force=False):
     
     # title
     title = details('h1', attrs={'class':'summary'})[0].string
-    event.title = scrub_html(title)
+    event.title = scrub_html_strict(title)
     
     
     # Description
