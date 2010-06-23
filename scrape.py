@@ -113,8 +113,10 @@ def scrub_html(raw):
     #raw = raw.replace('</b>','')
     #raw = raw.replace('<strong>','')
     #raw = raw.replace('</strong>','')
-    #raw = raw.replace('<ul>','')
-    #raw = raw.replace('</ul>','')
+    raw = raw.replace('<ul>','')
+    raw = raw.replace('<ol>','')
+    raw = raw.replace('</ul>','<br/>')
+    raw = raw.replace('</ol>','<br/>')
     #raw = raw.replace('</p>','\n')
     raw = raw.replace('</li>','<br/>')
     #raw = raw.replace('&quot;','"')
@@ -139,6 +141,7 @@ def scrub_html_strict(raw):
     raw = raw.replace('&#8220','"')
     raw = raw.replace('&#8221','"')
     raw = raw.replace('&#8230','...')
+    raw = raw.replace('\n','')
     return raw
 
 
@@ -184,8 +187,12 @@ def parse_session(id, force=False):
     
     # schedule
     # abbr dtstart/dtend
-    event.start = datetime.strptime(details('abbr', 'dtstart dtstamp')[0]['title'], '%Y%m%dT%H%M')
-    event.end = datetime.strptime(details('abbr', 'dtend')[0]['title'], '%Y%m%dT%H%M')
+    try:
+        event.start = datetime.strptime(details('abbr', 'dtstart dtstamp')[0]['title'], '%Y%m%dT%H%M')
+        event.end = datetime.strptime(details('abbr', 'dtend')[0]['title'], '%Y%m%dT%H%M')
+    except IndexError:
+        # must have a start and end time
+        return
     
     # Track(s)
     track_tags = details('span', attrs={'class':'en_session_topics category'})
