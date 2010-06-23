@@ -11,7 +11,10 @@ from models import *
 @cache_page(60 * 15)
 def conference(request):
     """ basic conference info """
-    
+    return HttpResponse(json.dumps(conference_data()))
+
+
+def conference_data():
     # get start/end date. first/last event in schedule
     first_date = Event.objects.all().order_by('start')[0].start
     end_date = Event.objects.all().order_by('-start')[0].start
@@ -30,8 +33,7 @@ def conference(request):
         tracks=tracks,
         locations=locations
     )
-    
-    return HttpResponse(json.dumps(info))
+    return info
 
 
 def sessions_day(request, timestamp):
@@ -44,12 +46,16 @@ def sessions_day(request, timestamp):
     json_str = cache.get(key)
     if not json_str:
         # data wasn't cached
-        date_end = day + timedelta(1)
-        items = [session.list_dict() for session in Event.objects.filter(start__gte=day, start__lte=date_end)]
-        data = dict(items=items)
+        data = sessions_day_data(day)
         json_str = json.dumps(data)
         cache.set(key, json_str, 60*15)
     return HttpResponse(json_str)
+
+
+def sessions_day_data(day):
+    date_end = day + timedelta(1)
+    items = [session.list_dict() for session in Event.objects.filter(start__gte=day, start__lte=date_end)]
+    return dict(items=items)
 
 
 def sessions(request):

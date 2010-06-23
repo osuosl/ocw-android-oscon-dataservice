@@ -28,6 +28,7 @@ class Track(models.Model):
     def __str__(self):
         return self.name
 
+
 class Speaker(models.Model):
     oid = models.CharField(max_length=10, unique=True, null=True, blank=True)
     name = models.CharField(max_length=128)
