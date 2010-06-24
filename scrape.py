@@ -224,11 +224,11 @@ def parse_session(id, force=False):
     
     event.save()
     
-    #for id in speakers:
-    #    speaker = parse_speaker(id)
-    #    event.speakers.add(speaker)
-    #for mod in moderators:
-    #    event.speakers.add(mod)
+    for id in speakers:
+        speaker = parse_speaker(id)
+        event.speakers.add(speaker)
+    for mod in moderators:
+        event.speakers.add(mod)
 
 def parse_html(html, klass):
     load_data()
