@@ -35,7 +35,7 @@ class EventAdmin(admin.ModelAdmin):
 class SpeakerAdmin(admin.ModelAdmin):
     list_display = ('name',)
     search_fields = ('name','bio')
-    inlines = [EventInline]
+    inlines = []
 
 
 admin.site.register(Event, EventAdmin)

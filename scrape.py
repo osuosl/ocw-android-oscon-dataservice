@@ -96,7 +96,8 @@ def parse_speaker(id):
     
         # twitter
         if len(link_tags) == 2:
-            speaker.twitter = link_tags[1].string
+            twitter = link_tags[1].string
+            speaker.twitter = None if twitter == 'Attendee Directory Profile' else twitter
     
     speaker.save()
     return speaker
@@ -164,9 +165,8 @@ def parse_session(id, force=False):
         event.oid = id
     
     # title
-    title = details('h1', attrs={'class':'summary'})[0].string
+    title = details('h1', attrs={'class':'summary'})[0].string.strip()
     event.title = scrub_html_strict(title)
-    
     
     # Description
     description_tag = details('div', attrs={'class':'en_session_description description'})[0]
@@ -224,11 +224,11 @@ def parse_session(id, force=False):
     
     event.save()
     
-    for id in speakers:
-        speaker = parse_speaker(id)
-        event.speakers.add(speaker)
-    for mod in moderators:
-        event.speakers.add(mod)
+    #for id in speakers:
+    #    speaker = parse_speaker(id)
+    #    event.speakers.add(speaker)
+    #for mod in moderators:
+    #    event.speakers.add(mod)
 
 def parse_html(html, klass):
     load_data()
