@@ -74,7 +74,7 @@ def parse_speaker(id):
     # name
     name_tag = details('h1', attrs={'class':'fn'})[0]
     name = scrub_html_strict(name_tag.contents[0].strip())
-    print 'SPEAKER:', id, name
+    print 'SPEAKER:', id
     
     try:
         speaker = Speaker.objects.get(Q(name=name)|Q(oid=id))
