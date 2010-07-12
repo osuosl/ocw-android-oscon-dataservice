@@ -18,6 +18,8 @@ if __name__ == '__main__':
 import httplib2
 from datetime import datetime, timedelta
 
+
+from django.db.models import Q
 from BeautifulSoup import BeautifulSoup
 
 from schedule.models import *
@@ -62,7 +64,7 @@ def create_speaker_by_name(name):
 
 
 def parse_speaker(id):
-    print 'SPEAKER:', id
+    
     url = URI_SPEAKER % id
     http = httplib2.Http()
     response, html = http.request(url, 'GET')
@@ -71,10 +73,11 @@ def parse_speaker(id):
     
     # name
     name_tag = details('h1', attrs={'class':'fn'})[0]
-    name = name_tag.contents[0].strip()
+    name = scrub_html_strict(name_tag.contents[0].strip())
+    print 'SPEAKER:', id, name
     
     try:
-        speaker = Speaker.objects.get(name=name)
+        speaker = Speaker.objects.get(Q(name=name)|Q(oid=id))
     except Speaker.DoesNotExist:
         speaker = Speaker()
         speaker.oid = id
